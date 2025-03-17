@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactúa con la IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #007BFF;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        #inputMensaje {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #respuesta {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            word-wrap: break-word;
+            white-space: pre-wrap; /* Preserve newlines */
+        }
+
+        .loading {
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactúa con la IA</h1>
+        <input type="text" id="inputMensaje" placeholder="Escribe algo...">
+        <button onclick="enviarMensaje()">Enviar</button>
+        <p id="respuesta"></p>
+    </div>
+
+    <script>
+        async function enviarMensaje() {
+        const mensaje = document.getElementById("inputMensaje").value;
+        console.log("Enviando mensaje:", mensaje);  // Imprime el mensaje que se está enviando
+
+        const response = await fetch("http://127.0.0.1:8004/ask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ mensaje: mensaje }) // El cuerpo contiene el mensaje
+        });
+
+        // Si la respuesta es exitosa
+        if (response.ok) {
+            // Obtener la respuesta de la IA
+            const data = await response.json();
+            console.log("Respuesta recibida:", data);  // Imprime la respuesta que se recibe de la IA
+
+            // Mostrar la respuesta en el HTML
+            document.getElementById("respuesta").innerText = data.respuesta;
+        } else {
+            // Si hubo un error, mostrarlo
+            console.log("Error al comunicarse con la IA.");
+            document.getElementById("respuesta").innerText = "Error al comunicarse con la IA.";
+        }
+    }
+    </script>
+</body>
+</html>
