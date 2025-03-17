@@ -1,1 +1,4 @@
 # Frontend para la competición de DEDALUS
+
+Ejecutar en vsCode
+uvicorn main:app --reload --host 127.0.0.1 --port 800x cuidado con el port, cambiarlo tambien en index.html para /ask
